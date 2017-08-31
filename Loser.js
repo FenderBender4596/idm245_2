@@ -8,6 +8,7 @@ gameObj.Loser.prototype = {
         spLoser.anchor.setTo(0.5, 0.5);
 
         var btTry = this.add.button(this.world.centerX-150, this.world.centerY+150, 'tryAgain', this.replayFun, this, 1, 0, 2);
+        var btHome = this.add.button(this.world.centerX-85, this.world.centerY+225, 'home', this.goHome, this, 1, 0, 2);
 
         var scoreStr = gameObj.gScore;
         var timeStr = gameObj.gTime;
@@ -31,5 +32,9 @@ gameObj.Loser.prototype = {
   replayFun: function () {
     console.log('replayFun');
     this.state.start('Play');
+  },
+  goHome: function() {
+    console.log('wentHome');
+    this.state.start('Main')
   }
 };

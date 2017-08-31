@@ -7,14 +7,13 @@ gameObj.Play = function (game) {
     var sPaddle2;     // paddle 2
     var speedNum;
     var sBall;         // paddle movement
+    var ball_launched; // checks if ball was launched *boolean value*
+    var ball_velocity; // speed
 };
 
 gameObj.Play.prototype = {
   create: function () {
     console.log('State - Play');
-
-        this.initPhysics();
-        this.startDemo(); 
       
         var spGameBackground = this.add.image(this.world.centerX, this.world.centerY, 'gameScreen');
         spGameBackground.anchor.setTo(0.5, 0.5);
@@ -22,6 +21,13 @@ gameObj.Play.prototype = {
         sPaddle1 = this.add.sprite(this.world.centerX-480, this.world.centerY-100, 'paddle1');
         sPaddle2 = this.add.sprite(this.world.centerX+450, this.world.centerY-100, 'paddle2');
         sBall = this.add.sprite(this.world.centerX, this.world.centerY, 'ball');
+        sBall.anchor.setTo(0.5,0.5);
+//        this.physics.arcade.enable(sBall);
+//        sBall.body.collisideWorldBounds = true;
+//        sBall.body.bounce.setTo(1,1); 
+//      
+//        return sBall;
+        
         
 
         // Add walking mummy
@@ -75,21 +81,18 @@ gameObj.Play.prototype = {
     // Start said timer 
         timerObj.start();
       
-        speedNum = 4;
-        
-
-       var gameProperties = {
-           screenWidth: 960,
-           screenHeight: 720,
-    
-           dashSize: 5,
-    
-           sBallVelocity: 500,
-           sBallStartDelay: 2,
-           sBallRandomStartingAngleLeft: [-120, 120],
-           sBallRandomStartingAngleRight: [-60, 60],
-     
-};
+        speedNum = 4;      
+      
+      ball_launched = false;
+      ball_velocity = 400;
+      this.input.onDown.add(this.launch_ball, this);
+      
+//      console.log('physics_enabled');
+//      this.physics.arcade.enable(sBall);
+//      sBall.body.collisideWorldBounds = true;
+//      sBall.body.bounce.setTo(1,1); 
+//      
+//      return sBall;
       
   },
   winnerFun: function () {
@@ -138,27 +141,27 @@ gameObj.Play.prototype = {
        sPaddle2.y += speedNum;
     }
 },
-  initPhysics: function () {
-  console.log('physics enabled');
-  this.physics.startSystem(Phaser.Physics.ARCADE);
-  this.game.physics.enable(this.sBall, Phaser.Physics.ARCADE);
-  
-  this.sBall.checkWorldBounds = true;
-  this.sBall.body.collideWorldBounds = true;
-  this.sBall.body.immovable = true;
-  this.sBall.body.bounce.set(1);      
-},    
-  startDemo: function () {
-  console.log('demo started');
-  this.sBall.visible = false;
-  this.time.events.add(Phaser.Timer.SECOND * gameProperties.sBallStartDelay, this.startBall, this);
-}, 
-  startBall: function () {
-  console.log('ball moving');
-  this.sBall.visible = true;
-  var randomAngle = this.rnd.pick(gameProperties.sBallRandomStartingAngleRight.concat(gameProperties.sBallRandomStartingAngleLeft));
-  this.physics.arcade.velocityFromAngle(randomAngle, gameProperties.sBallVelocity, this.sBall.body.velocity);
+ball_move: function() {
+    console.log('physics_enabled');
+    this.physics.arcade.enable(sBall);
+    sBall.body.collisideWorldBounds = true;
+    sBall.body.bounce.setTo(1,1); 
+      
+    return sBall;
 },
+launch_ball: function(){
+  console.log('ball_launched');
+  if(ball_launched){
+    sBall.x = this.world.centerX;
+    sBall.y = this.world.centerY;
+//    sBall.body.velocity.setTo(0,0);
+    ball_launched = false;
+ } else {
+    sBall.x -= ball_velocity;
+    sBall.y += ball_velocity;
+    ball_launched = true;
+ }
+},  
   render: function(){
 }
 };
