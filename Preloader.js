@@ -64,6 +64,8 @@ gameObj.Preloader.prototype = {
     this.load.spritesheet('winButton', 'img/btn_win.png', 90, 90);
     this.load.spritesheet('loseButton', 'img/btn_lose.png', 90, 90);
     this.load.spritesheet('pointsButton', 'img/btn_points.png', 90, 90);
+    
+    this.load.audio('paddle', 'snd/paddle.mp3');
 
     // this.load.image('logoWin', 'img/win_title.png');
         

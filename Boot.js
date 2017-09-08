@@ -1,6 +1,7 @@
 var gameObj = {
   // Global variables are decleared here!
-  gScore: 3770,
+  gScore: 0,
+  gScore2: 0,
   gTime: "00:00"
 };
 
